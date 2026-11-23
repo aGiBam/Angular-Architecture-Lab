@@ -278,6 +278,8 @@
 
   <!-- Requests Main Content Area -->
   <main class="dashboard-content" aria-label="Requests Feed">
+    <app-quick-banner [message]="'⚡ Real-time Lab Alert: Kubernetes cluster memory usage reached 88%!'"
+      (acknowledged)="notificationService.info('Banner was acknowledged by Admin!')" />
     <!-- Section Header Meta -->
     <div class="content-header">
       <div class="results-meta">

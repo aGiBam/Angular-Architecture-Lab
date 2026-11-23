@@ -20,7 +20,7 @@ import {
   FORMATTER_TOKEN,
   LOGGER_TOKEN
 } from '../../core/tokens/provider-strategies.demo';
-
+import { QuickBannerComponent } from './components/quick-banner/quick-banner';
 /**
  * DashboardComponent
  *
@@ -44,15 +44,16 @@ import {
     CommonModule,
     RequestCardComponent,
     NotificationHostComponent,
-    SearchBarComponent
+    SearchBarComponent,
+    QuickBannerComponent,
   ],
   providers: [
     // Component-level provider: creates an isolated instance per DashboardComponent instance
-    DashboardFilterState
+    DashboardFilterState,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent {
   // 1. Injected Services (Root Scope)
@@ -102,7 +103,7 @@ export class DashboardComponent {
     const sort = this.filterState.sortBy();
 
     // 1. Filter
-    let result = items.filter(r => {
+    let result = items.filter((r) => {
       const matchesQuery =
         !query ||
         r.title.toLowerCase().includes(query) ||
@@ -131,7 +132,7 @@ export class DashboardComponent {
           URGENT: 4,
           HIGH: 3,
           MEDIUM: 2,
-          LOW: 1
+          LOW: 1,
         };
         return priorityWeight[b.priority] - priorityWeight[a.priority];
       }
@@ -149,7 +150,7 @@ export class DashboardComponent {
     if (success) {
       this.notificationService.success(
         `Request #${id} was deleted successfully. (Unidirectional Flow: Child Output -> Parent Coordinator -> Service Mutation)`,
-        5000
+        5000,
       );
     } else {
       this.notificationService.error(`Failed to delete request #${id}.`);
@@ -160,7 +161,7 @@ export class DashboardComponent {
     this.requestService.updateRequestStatus(event.id, event.status);
     this.notificationService.info(
       `Request #${event.id} status transitioned to "${event.status}".`,
-        3500
+      3500,
     );
   }
 
@@ -195,7 +196,7 @@ export class DashboardComponent {
   }
 
   toggleArchInspector(): void {
-    this.showArchInspector.update(v => !v);
+    this.showArchInspector.update((v) => !v);
   }
 
   openAddModal(): void {
@@ -214,15 +215,11 @@ export class DashboardComponent {
       return;
     }
 
-    const created = this.requestService.addRequest(
-      title,
-      this.newCategory(),
-      this.newPriority()
-    );
+    const created = this.requestService.addRequest(title, this.newCategory(), this.newPriority());
 
     this.notificationService.success(
       `Request #${created.id} created and dispatched to queue.`,
-      4000
+      4000,
     );
     this.closeAddModal();
   }
